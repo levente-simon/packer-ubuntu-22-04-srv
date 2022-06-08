@@ -1,0 +1,184 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US.UTF-8
+  keyboard:
+    layout: en
+    variant: us
+  # identity:
+  user-data:
+    # hostname: packer-ubuntu-22-04
+    timezone: Europe/Budapest
+    package_upgrade: true
+    users:
+      - name: iac
+        passwd: $6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0 #ubuntu
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        shell: /bin/bash
+  refresh-installer: 
+    update: false
+  ssh:
+    install-server: yes
+    allow-pw: yes
+  packages:
+    - qemu-guest-agent
+  storage:
+    swap:
+      size: 0
+    config:
+      - id: disk0
+        type: disk
+        name: disk0
+        grub_device: true
+        preserve: false
+        ptable: gpt
+        wipe: superblock
+        match:
+          size: largest
+
+      - id: part_bios
+        type: partition
+        number: 1
+        size: 1048576
+        device: disk0
+        flag: bios_grub
+        name: part_boot
+        preserve: false
+      - id: part_boot
+        type: partition
+        number: 2
+        size: 2GB
+        device: disk0
+        flag: ""
+        name: part_boot
+        preserve: false
+      - id: part_pv1
+        type: partition
+        number: 3
+        size: -1
+        device: disk0
+        flag: ""
+        name: part_pv1
+        preserve: false
+
+      - id: vg_root
+        type: lvm_volgroup
+        name: vg_root
+        devices:
+          - part_pv1
+        preserve: false
+
+      - id: lv_root
+        type: lvm_partition
+        name: lv_root
+        volgroup: vg_root
+        size: 6G
+        preserve: false
+      - id: lv_tmp
+        type: lvm_partition
+        name: lv_tmp
+        volgroup: vg_root
+        size: 2G
+        preserve: false
+      - id: lv_var
+        type: lvm_partition
+        name: lv_var
+        volgroup: vg_root
+        size: 6G
+        preserve: false
+      - id: lv_var_log
+        type: lvm_partition
+        name: lv_var_log
+        volgroup: vg_root
+        size: 5G
+      - id: lv_var_log_audit
+        type: lvm_partition
+        name: lv_var_log_audit
+        volgroup: vg_root
+        size: 5G
+      - id: lv_home
+        type: lvm_partition
+        name: lv_home
+        volgroup: vg_root
+        size: 4G
+
+      - id: fs_boot
+        type: format
+        name: fs_boot
+        volume: part_boot
+        fstype: ext4
+        preserve: false
+      - id: fs_root
+        type: format
+        name: fs_root
+        volume: lv_root
+        fstype: ext4
+        preserve: false
+      - id: fs_tmp
+        type: format
+        name: fs_tmp
+        volume: lv_tmp
+        fstype: ext4
+        preserve: false
+      - id: fs_var
+        type: format
+        name: fs_var
+        volume: lv_var
+        fstype: ext4
+        preserve: false
+      - id: fs_var_log
+        type: format
+        name: fs_var_log
+        volume: lv_var_log
+        fstype: ext4
+      - id: fs_var_log_audit
+        type: format
+        name: fs_var_log_audit
+        volume: lv_var_log_audit
+        fstype: ext4
+      - id: fs_home
+        type: format
+        name: fs_home
+        volume: lv_home
+        fstype: ext4
+
+      - id: mnt_boot
+        type: mount
+        name: mnt_boot
+        device: fs_boot
+        path: /boot
+      - id: mnt_root
+        type: mount
+        name: mnt_root
+        device: fs_root
+        path: /
+      - id: mnt_tmp
+        type: mount
+        name: mnt_tmp
+        device: fs_tmp
+        path: /tmp
+        options: 'nosuid,nodev'
+      - id: mnt_var
+        type: mount
+        name: mnt_var
+        device: fs_var
+        path: /var
+      - id: mnt_var_log
+        type: mount
+        name: mnt_var_log
+        device: fs_var_log
+        path: /var/log
+      - id: mnt_var_log_audit
+        type: mount
+        name: mnt_var_log_audit
+        device: fs_var_log_audit
+        path: /var/log/audit
+      - id: mnt_home
+        type: mount
+        name: mnt_home
+        device: fs_home
+        path: /home
+        options: 'nodev'
+
+
