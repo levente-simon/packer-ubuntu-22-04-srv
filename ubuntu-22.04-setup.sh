@@ -480,9 +480,9 @@ HostbasedAuthentication no # 5.3.9 Ensure SSH HostbasedAuthentication is disable
 PermitRootLogin no         # 5.3.10 Ensure SSH root login is disabled
 PermitEmptyPasswords no    # 5.3.11 Ensure SSH PermitEmptyPasswords is disabled
 PermitUserEnvironment no   # 5.3.12 Ensure SSH PermitUserEnvironment is disabled
-# Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr # 5.3.13 Ensure only strong Ciphers are used
-# MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256 # 5.3.14 Ensure only strong MAC algorithms are used
-# KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256 # 5.3.15 Ensure only strong Key Exchange algorithms are used
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr # 5.3.13 Ensure only strong Ciphers are used
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256 # 5.3.14 Ensure only strong MAC algorithms are used
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256 # 5.3.15 Ensure only strong Key Exchange algorithms are used
 ClientAliveInterval 300    # 5.3.16 Ensure SSH Idle Timeout Interval is configured
 ClientAliveCountMax 3      # 5.3.16 Ensure SSH Idle Timeout Interval is configured
 LoginGraceTime 60          # 5.3.17 Ensure SSH LoginGraceTime is set to one minute or less
