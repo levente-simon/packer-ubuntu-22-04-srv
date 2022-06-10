@@ -563,9 +563,22 @@ rm -rf /etc/cloud
 rm -rf /var/lib/cloud
 apt -yq install cloud-init
 
-# sed -i s/'groups:.*$'/'groups: [adm, wheel, docker, systemd-journal]'/ /etc/cloud/cloud.cfg
-# echo "preserve_hostname: false" >> /etc/cloud/cloud.cfg
-# echo "manage_etc_hosts: true" >> /etc/cloud/cloud.cfg
+# -i s/'groups:.*$'/'groups: [adm, wheel, docker, systemd-journal]'/ /etc/cloud/cloud.cfg
+
+touch /etc/growroot-disabled
+
+cat <<EOF > /etc/cloud/cloud.cfg.d/99-packer-setup.cfg
+# preserve_hostname: false
+# manage_etc_hosts: true
+growpart:
+  mode: auto
+  devices: [/dev/sda3]
+  ignore_growroot_disabled: true
+runcmd:
+  - [pvresize, /dev/sda3]
+  - [lvextend, -l, +100%FREE, /dev/vg_root/lv_data]
+  - [xfs_growfs, /dev/vg_root/lv_data]
+EOF
 
 shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
 sudo mkdir -m og-rxw /etc/skel/.ssh
