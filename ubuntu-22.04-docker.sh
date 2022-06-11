@@ -30,6 +30,7 @@ ln -s /data/docker /var/lib/docker
 
 systemctl enable docker.service containerd.service cloud-config cloud-init cloud-init-local cloud-final
 
+usermod -aG docker iac
 grep -Elrs '^\s*groups:\s*\[.*\]\s*$' /etc/cloud | while read cfg; do sed -ri 's/(^\s*groups:\s*\[.*)].*$/\1, docker]/' $cfg; done
 
 systemctl daemon-reload
