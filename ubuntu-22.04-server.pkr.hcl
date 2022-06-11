@@ -2,20 +2,16 @@ source "proxmox" "ubuntu-22_04" {
   proxmox_url              = "${var.proxmox_hostname}/api2/json"
   username                 = var.proxmox_username
   password                 = var.proxmox_password
-  node                     = var.proxmox_node
 
   # iso_url                  = var.iso_url
   iso_file                 = var.iso_file
   insecure_skip_tls_verify = true
-  vm_name                   = "Ubuntu-22-04"
   memory                    = "6144"
   cores                     = "2"
   sockets                   = "2"
   cpu_type                 = "host"
   os                       = "l26"
   onboot                   = true
-  template_name            = "ubuntu-22.04-srv-tmpl"
-  template_description     = "Template for Ubuntu 22.04 LTS"
   unmount_iso              = true
 
   ssh_username              = "iac"
@@ -53,13 +49,51 @@ source "proxmox" "ubuntu-22_04" {
 }
 
 build {
-  sources = [
-    "proxmox.ubuntu-22_04"
-  ]
+  source "proxmox.ubuntu-22_04" {
+    node                 = var.proxmox_node
+    vm_name              = "Ubuntu-22-04"
+    template_name        = "ubuntu-22.04-srv-tmpl"
+    template_description = "Template for Ubuntu 22.04 LTS"
+  }
   
   provisioner "shell" {
     pause_before = "20s"
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-setup.sh"
+    script = "ubuntu-22.04-cis.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-cloud-init.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-cleanup.sh"
+  }
+}
+
+build {
+  source "proxmox.ubuntu-22_04" {
+    node                 = var.proxmox_node
+    vm_name              = "Ubuntu-22-04-docker"
+    template_name        = "ubuntu-22.04-docker-tmpl"
+    template_description = "Template for Ubuntu 22.04 LTS with docker"
+  }
+  
+  provisioner "shell" {
+    pause_before = "20s"
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-cis.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-cloud-init.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-docker.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script = "ubuntu-22.04-cleanup.sh"
   }
 }

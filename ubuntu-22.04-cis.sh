@@ -2,7 +2,7 @@
 
 while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
   echo 'Waiting for boot-finished...'
-  sleep 1
+  sleep 5
 done
 
 
@@ -557,34 +557,4 @@ chown root:root /etc/gshadow-
 chown root:shadow /etc/gshadow-
 
 systemctl daemon-reload
-
-apt -yq purge cloud-init
-rm -rf /etc/cloud
-rm -rf /var/lib/cloud
-apt -yq install cloud-init
-
-# -i s/'groups:.*$'/'groups: [adm, wheel, docker, systemd-journal]'/ /etc/cloud/cloud.cfg
-
-touch /etc/growroot-disabled
-
-cat <<EOF > /etc/cloud/cloud.cfg.d/99-packer-setup.cfg
-# preserve_hostname: false
-# manage_etc_hosts: true
-growpart:
-  mode: auto
-  devices: [/dev/sda3]
-  ignore_growroot_disabled: true
-runcmd:
-  - [pvresize, /dev/sda3]
-  - [lvextend, -l, +100%FREE, /dev/vg_root/lv_data]
-  - [xfs_growfs, /dev/vg_root/lv_data]
-EOF
-
-shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
-sudo mkdir -m og-rxw /etc/skel/.ssh
-
-truncate -s 0 /var/log/lastlog /var/log/wtmp /var/log/btmp /etc/resolv.conf
-unset HISTFILE; rm -rf /home/*/.*history /root/.*history /var/run/utmp /tmp/* /var/tmp/* /root/*ks
-
-cloud-init clean -l
 

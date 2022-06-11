@@ -48,7 +48,7 @@ autoinstall:
       - id: part_boot
         type: partition
         number: 2
-        size: 2GB
+        size: 1GB
         device: disk0
         flag: ""
         name: part_boot
@@ -85,7 +85,7 @@ autoinstall:
         type: lvm_partition
         name: lv_var
         volgroup: vg_root
-        size: 6G
+        size: 5G
         preserve: false
       - id: lv_var_log
         type: lvm_partition
@@ -102,46 +102,56 @@ autoinstall:
         name: lv_home
         volgroup: vg_root
         size: 4G
+      - id: lv_data
+        type: lvm_partition
+        name: lv_data
+        volgroup: vg_root
+        size: 2G
 
       - id: fs_boot
         type: format
         name: fs_boot
         volume: part_boot
-        fstype: ext4
+        fstype: xfs
         preserve: false
       - id: fs_root
         type: format
         name: fs_root
         volume: lv_root
-        fstype: ext4
+        fstype: xfs
         preserve: false
       - id: fs_tmp
         type: format
         name: fs_tmp
         volume: lv_tmp
-        fstype: ext4
+        fstype: xfs
         preserve: false
       - id: fs_var
         type: format
         name: fs_var
         volume: lv_var
-        fstype: ext4
+        fstype: xfs
         preserve: false
       - id: fs_var_log
         type: format
         name: fs_var_log
         volume: lv_var_log
-        fstype: ext4
+        fstype: xfs
       - id: fs_var_log_audit
         type: format
         name: fs_var_log_audit
         volume: lv_var_log_audit
-        fstype: ext4
+        fstype: xfs
       - id: fs_home
         type: format
         name: fs_home
         volume: lv_home
-        fstype: ext4
+        fstype: xfs
+      - id: fs_data
+        type: format
+        name: fs_data
+        volume: lv_data
+        fstype: xfs
 
       - id: mnt_boot
         type: mount
@@ -180,5 +190,10 @@ autoinstall:
         device: fs_home
         path: /home
         options: 'nodev'
+      - id: mnt_data
+        type: mount
+        name: mnt_data
+        device: fs_data
+        path: /data
 
 
