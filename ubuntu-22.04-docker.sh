@@ -1,10 +1,5 @@
 #!/bin/bash
 
-while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-  echo 'Waiting for boot-finished...'
-  sleep 5
-done
-
 # TODO: temp. disable fw
 systemctl stop ufw
 systemctl disable ufw

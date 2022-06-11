@@ -1,10 +1,5 @@
 #!/bin/bash
 
-while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-  echo 'Waiting for boot-finished...'
-  sleep 5
-done
-
 export DEBIAN_FRONTEND=noninteractive
 apt -yq purge cloud-init
 rm -rf /etc/cloud
