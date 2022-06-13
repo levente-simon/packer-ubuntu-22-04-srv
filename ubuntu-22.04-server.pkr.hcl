@@ -62,15 +62,15 @@ build {
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cis.sh"
+    script          = "scripts/ubuntu-22.04-cis.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cloud-init.sh"
+    script          = "scripts/ubuntu-22.04-cloud-init.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cleanup.sh"
+    script          = "scripts/ubuntu-22.04-cleanup.sh"
   }
 }
 
@@ -88,18 +88,18 @@ build {
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cis.sh"
+    script          = "scripts/ubuntu-22.04-cis.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cloud-init.sh"
+    script          = "scripts/ubuntu-22.04-cloud-init.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-docker.sh"
+    script          = "scripts/ubuntu-22.04-docker.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script          = "ubuntu-22.04-cleanup.sh"
+    script          = "scripts/ubuntu-22.04-cleanup.sh"
   }
 }
