@@ -7,8 +7,6 @@ rm -rf /var/lib/cloud
 rm -rf /etc/netplan/*
 apt -yq install cloud-init
 
-# -i s/'groups:.*$'/'groups: [adm, wheel, docker, systemd-journal]'/ /etc/cloud/cloud.cfg
-
 touch /etc/growroot-disabled
 
 cat <<EOF > /etc/cloud/cloud.cfg.d/99-packer-setup.cfg
