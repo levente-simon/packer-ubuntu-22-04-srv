@@ -1,11 +1,5 @@
 #!/bin/bash
 
-while [ ! -f /var/lib/cloud/instance/boot-finished ]; do
-  echo 'Waiting for boot-finished...'
-  sleep 5
-done
-
-
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -yq upgrade                             # 1.9 Ensure updates, patches, and additional security software are installed
@@ -480,9 +474,14 @@ HostbasedAuthentication no # 5.3.9 Ensure SSH HostbasedAuthentication is disable
 PermitRootLogin no         # 5.3.10 Ensure SSH root login is disabled
 PermitEmptyPasswords no    # 5.3.11 Ensure SSH PermitEmptyPasswords is disabled
 PermitUserEnvironment no   # 5.3.12 Ensure SSH PermitUserEnvironment is disabled
+HostKeyAlgorithms ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp521-cert-v01@openssh.com,ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-dss-cert-v01@openssh.com,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,ssh-ed25519,ssh-rsa,ssh-dss
+PubkeyAcceptedAlgorithms=+ssh-rsa,ssh-rsa-cert-v01@openssh.com
+# Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr # 5.3.13 Ensure only strong Ciphers are used
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr # 5.3.13 Ensure only strong Ciphers are used
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256 # 5.3.14 Ensure only strong MAC algorithms are used
-KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256 # 5.3.15 Ensure only strong Key Exchange algorithms are used
+# MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256 # 5.3.14 Ensure only strong MAC algorithms are used
+# MACs hmac-md5,hmac-md5-96,hmac-ripemd160,hmac-sha1,hmac-sha1-96,hmac-sha2-256,hmac-sha2-512,umac-64@openssh.com,umac-128@openssh.com,hmac-md5-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-64-etm@openssh.com,umac-128-etm@openssh.com
+# KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256 # 5.3.15 Ensure only strong Key Exchange algorithms are used
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521
 ClientAliveInterval 300    # 5.3.16 Ensure SSH Idle Timeout Interval is configured
 ClientAliveCountMax 3      # 5.3.16 Ensure SSH Idle Timeout Interval is configured
 LoginGraceTime 60          # 5.3.17 Ensure SSH LoginGraceTime is set to one minute or less

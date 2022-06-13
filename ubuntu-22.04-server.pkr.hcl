@@ -57,17 +57,20 @@ build {
   }
   
   provisioner "shell" {
-    pause_before = "20s"
-    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cis.sh"
+    pause_before    = "20s"
+    inline          = [ "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for boot-finished...'; sleep 5; done" ]
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cloud-init.sh"
+    script          = "ubuntu-22.04-cis.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cleanup.sh"
+    script          = "ubuntu-22.04-cloud-init.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script          = "ubuntu-22.04-cleanup.sh"
   }
 }
 
@@ -80,20 +83,23 @@ build {
   }
   
   provisioner "shell" {
-    pause_before = "20s"
-    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cis.sh"
+    pause_before    = "20s"
+    inline          = [ "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for boot-finished...'; sleep 5; done" ]
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cloud-init.sh"
+    script          = "ubuntu-22.04-cis.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-docker.sh"
+    script          = "ubuntu-22.04-cloud-init.sh"
   }
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
-    script = "ubuntu-22.04-cleanup.sh"
+    script          = "ubuntu-22.04-docker.sh"
+  }
+  provisioner "shell" {
+    execute_command = "chmod +x {{ .Path }}; echo 'ubuntu' | sudo -S bash -x -c '{{ .Vars }} {{ .Path }}'"
+    script          = "ubuntu-22.04-cleanup.sh"
   }
 }

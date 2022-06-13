@@ -4,6 +4,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt -yq purge cloud-init
 rm -rf /etc/cloud
 rm -rf /var/lib/cloud
+rm -rf /etc/netplan/*
 apt -yq install cloud-init
 
 # -i s/'groups:.*$'/'groups: [adm, wheel, docker, systemd-journal]'/ /etc/cloud/cloud.cfg
