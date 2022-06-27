@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: temp. disable fw
+# TODO: enable fw
 systemctl stop ufw
 systemctl disable ufw
 systemctl stop firewalld

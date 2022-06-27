@@ -1,10 +1,11 @@
 #!/bin/bash
 
+systemctl stop ufw
+
 export DEBIAN_FRONTEND=noninteractive
 apt -yq purge cloud-init
 rm -rf /etc/cloud
 rm -rf /var/lib/cloud
-rm -rf /etc/netplan/*
 apt -yq install cloud-init
 
 touch /etc/growroot-disabled
